@@ -1,6 +1,4 @@
-var TokenController = require('./controllers/token'),
-  OptionController = require('./controllers/option');
-  UserController = require('./controllers/user'),
+var UserController = require('./controllers/user'),
   argv = require('minimist')(process.argv.slice(2)),
   config = require('./config');
 
@@ -50,9 +48,6 @@ module.exports = function(app, passport) {
   //Get user lists from twitter
   app.get('/users/:id/lists', UserController.getUserLists);
 
-  //Get lists added
-  app.get('/users/:id/lists_added', UserController.getUserListItems);
-
   //Add list
   app.put('/users/:id/lists_added/:list_id', UserController.addListItem);
 
@@ -60,6 +55,6 @@ module.exports = function(app, passport) {
   app.delete('/users/:id/lists_added/:list_id', UserController.removeListItem);
 
   //Fav/RT/Discard Tweet
-  app.post('/users/:id/tweet_action/:action', UserController.doTweetAction);
+  app.post('/users/:id/tweet_action/:action/:tweet_id', UserController.doTweetAction);
 
 };

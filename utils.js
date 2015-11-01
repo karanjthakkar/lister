@@ -26,6 +26,14 @@ module.exports = {
     });
   },
 
+  getSingleList: function(T, id, callback) {
+    T.get('lists/show', {
+      list_id: id
+    }, function(err, data) {
+      callback(err, data);
+    });
+  },
+
   processTweet: function(text) {
     return text.replace(/\\n+/, ' ').replace('&amp;', '&');
   }

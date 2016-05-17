@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 module.exports = {
 
   favorite: function(T, id, callback) {
@@ -34,8 +36,31 @@ module.exports = {
     });
   },
 
+  getListTimeline: function(T, id, max, callback) {
+    T.get('lists/statuses', {
+      list_id: id,
+      max_id: max,
+      count: 50
+    }, function(err, data) {
+      callback(err, data);
+    });
+  },
+
   processTweet: function(text) {
     return text.replace(/\\n+/, ' ').replace('&amp;', '&');
+  },
+
+  filterAndBuildTweetsForClient: function(listStatuses, tweetsSeen) {
+    return this.filterAlreadySeenTweets(listStatuses, tweetsSeen);
+  },
+
+  filterAlreadySeenTweets: function (listStatuses, tweetsSeen) {
+    return listStatuses.filter(function(status) {
+      var isPresent = _.find(tweetsSeen, function(tweet) {
+        return status.id_str === tweet.tweet_id;
+      });
+      return !isPresent;
+    });
   }
 
 }

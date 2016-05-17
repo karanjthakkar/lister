@@ -2,6 +2,7 @@ var mongoose = require('mongoose'),
   _ = require('lodash'),
   async = require('async'),
   Twit = require('twit'),
+  BigNumber = require('bignumber.js'),
   utils = require('../utils'),
   User = mongoose.model('User'),
   argv = require('minimist')(process.argv.slice(2)),
@@ -355,6 +356,60 @@ exports.doTweetAction = function(req, res) {
       }
 
     })
+  } else {
+    respondToUnauthenticatedRequests(res);
+  }
+};
+
+exports.getListStatuses = function(req, res) {
+  var userId = parseInt(req.params.id);
+  var listId = req.params.list_id;
+  var maxId = req.query.max_id;
+
+  if(req.user && req.user.id !== userId) {
+    return res.status(403).json({
+      message: 'You are not authorized to view this'
+    });
+  }
+  if (req.isAuthenticated()) {
+    User.findOne({
+      id: userId
+    }, function(err, user) {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          message: 'User not found'
+        });
+      }
+
+      var T = new Twit({
+        consumer_key: config.TWITTER_CONSUMER_KEY,
+        consumer_secret: config.TWITTER_CONSUMER_SECRET,
+        access_token: user.twitter_token,
+        access_token_secret: user.twitter_token_secret
+      });
+
+      utils.getListTimeline(T, listId, maxId, function(err, listStatuses) {
+
+        if (err) {
+          return res.status(500).json({
+            success: false,
+            message: 'Error fetching user list statuses'
+          });
+        }
+
+        var nextMaxId = null;
+        if (listStatuses.length > 0) {
+          nextMaxId = new BigNumber(listStatuses[listStatuses.length - 1].id_str)
+        }
+
+        return res.status(200).json({
+          success: true,
+          data: utils.filterAndBuildTweetsForClient(listStatuses, user.tweets_seen),
+          next_max_id: nextMaxId.minus(1)
+        });
+      });
+    });
   } else {
     respondToUnauthenticatedRequests(res);
   }

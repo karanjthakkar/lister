@@ -45,6 +45,9 @@ module.exports = function(app, passport) {
   //Get user profile
   app.get('/users/:id', UserController.getUserData);
 
+  //Get user list statuses form twitter
+  app.get('/users/:id/list/:list_id/statuses', UserController.getListStatuses);
+
   //Get user lists from twitter
   app.get('/users/:id/lists', UserController.getUserLists);
 

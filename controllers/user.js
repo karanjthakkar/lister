@@ -71,6 +71,7 @@ exports.getUserData = function(req, res) {
           username: user.username,
           followers: user.followers,
           following: user.following,
+          lists: user.lists,
           profile_image_url: user.profile_image_url,
           profile_banner_url: user.profile_banner_url,
           created_at: user.created_at,
@@ -132,7 +133,8 @@ exports.getUserLists = function(req, res) {
             list_description: item.description,
             list_name: item.name,
             list_created_at: item.created_at,
-            list_added: _.contains(lists_added, item.id_str)
+            list_added: _.contains(lists_added, item.id_str),
+            is_owner: item.user.id === userId
           };
         });
         return res.status(200).json({

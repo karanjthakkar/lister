@@ -43,21 +43,21 @@ module.exports = function(app, passport) {
   */
 
   //Get user profile
-  app.get('/users/:id', UserController.getUserData);
+  app.get('/user/:id/profile', UserController.getUserData);
 
   //Get user list statuses form twitter
-  app.get('/users/:id/list/:list_id/statuses', UserController.getListStatuses);
+  app.get('/user/:id/list/:list_id/statuses', UserController.getListStatuses);
 
   //Get user lists from twitter
-  app.get('/users/:id/lists', UserController.getUserLists);
+  app.get('/user/:id/lists', UserController.getUserLists);
 
   //Add list
-  app.put('/users/:id/lists_added/:list_id', UserController.addListItem);
+  app.put('/user/:id/lists_added/:list_id', UserController.addListItem);
 
   //Remove list
-  app.delete('/users/:id/lists_added/:list_id', UserController.removeListItem);
+  app.delete('/user/:id/lists_added/:list_id', UserController.removeListItem);
 
   //Fav/RT/Discard Tweet
-  app.post('/users/:id/tweet_action/:action/:tweet_id', UserController.doTweetAction);
+  app.post('/user/:id/tweet_action/:action/:tweet_id', UserController.doTweetAction);
 
 };

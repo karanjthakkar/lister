@@ -88,6 +88,7 @@ Response:
 
 
 Endpoint: `/user/:id/lists_added/:list_id` (PUT)
+
 Response: 
 
 ```
@@ -102,6 +103,7 @@ Response:
 
 
 Endpoint: `/user/:id/lists_added/:list_id` (DELETE)
+
 Response: 
 
 ```
@@ -116,6 +118,7 @@ Response:
 
 
 Endpoint: `/user/:id/tweet_action/:action/:tweet_id` (POST)
+
 Response: 
 
 ```

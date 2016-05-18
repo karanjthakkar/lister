@@ -132,5 +132,5 @@ function getTweetText(tweet) {
 }
 
 function processTweet(text) {
-  return text.replace(/\\n+/, ' ').replace('&amp;', '&');
+  return text.replace(/\\n+/g, ' ').replace(/&amp;/g, '&')
 }

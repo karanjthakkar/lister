@@ -5,7 +5,7 @@
 
 ### 1. Get User Profile
 
-Endpoint: `/users/:id` (GET)
+Endpoint: `/user/:id/profile` (GET)
 
 Response:
 
@@ -49,7 +49,7 @@ Response:
 
 ### 2. Get Lists to Select from Twitter
 
-Endpoint: `/users/:id/lists` (GET)
+Endpoint: `/user/:id/lists` (GET)
 
 Response: 
 
@@ -87,7 +87,7 @@ Response:
 
 
 
-Endpoint: `/users/:id/lists_added/:list_id` (PUT)
+Endpoint: `/user/:id/lists_added/:list_id` (PUT)
 Response: 
 
 ```
@@ -101,13 +101,77 @@ Response:
 
 
 
-Endpoint: `/users/:id/lists_added/:list_id` (DELETE)
+Endpoint: `/user/:id/lists_added/:list_id` (DELETE)
 Response: 
 
 ```
 {
   success: true, // (or false)
   message: 'Message present if success is false'
+}
+```
+
+### 5. Retweet/Favorite/Discard a tweet
+
+
+
+Endpoint: `/user/:id/tweet_action/:action/:tweet_id` (POST)
+Response: 
+
+```
+{
+  success: true, // (or false)
+  message: 'Message present if success is false'
+}
+```
+
+### 6. Get List Statuses
+
+
+
+Endpoint: `/user/:id/list/:list_id/statuses` (GET)
+Response: 
+
+```
+{
+  success: true, // (or false)
+  data: [
+    {
+      "tweet_id": "732431521215193089",
+      "tweet_author": "geekykaran",
+      "tweet_profile_image_url": "https://pbs.twimg.com/profile_images/728274649289785344/W1Ql2Zy__normal.jpg",
+      "original_tweet_author": "webkit",
+      "original_tweet_profile_image_url": "https://pbs.twimg.com/profile_images/627240677307383808/-nM6CaJ8_normal.png",
+      "original_tweet_id": "728643624464883712",
+      "tweet_text": "WebKit is now 100% ES6 complete according to @kangax’s handy table. 💯 https://t.co/Ncw6gh0uhw https://t.co/yyASsXanG4",
+      "tweet_url_entities": [
+        {
+          "url": "https://t.co/Ncw6gh0uhw",
+          "display_url": "kangax.github.io/compat-table/e…",
+          "expanded_url": "https://kangax.github.io/compat-table/es6/",
+          "indices": [
+            70,
+            93
+          ]
+        }
+      ],
+      "tweet_media_entities": [
+        {
+          "url": "https://t.co/yyASsXanG4",
+          "media_url": "https://pbs.twimg.com/media/Chypg9aUUAAP55z.jpg",
+          "display_url": "pic.twitter.com/yyASsXanG4",
+          "expanded_url": "http://twitter.com/webkit/status/728643624464883712/photo/1",
+          "indices": [
+            94,
+            117
+          ]
+        }
+      ],
+      "tweet_type": "retweet",
+      "retweet_count": 1519,
+      "favorite_count": 1168
+    }
+  ]
 }
 ```
 

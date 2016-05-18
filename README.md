@@ -133,6 +133,7 @@ Response:
 
 
 Endpoint: `/user/:id/list/:list_id/statuses` (GET)
+
 Response: 
 
 ```

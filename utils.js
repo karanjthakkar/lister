@@ -40,7 +40,7 @@ module.exports = {
     T.get('lists/statuses', {
       list_id: id,
       max_id: max,
-      count: 50
+      count: 30
     }, function(err, data) {
       callback(err, data);
     });

@@ -107,9 +107,11 @@ module.exports = {
       return {
         tweet_id: tweet.id_str,
         tweet_author: tweet.user.screen_name,
+        tweet_author_name: tweet.user.name,
         tweet_profile_image_url: tweet.user.profile_image_url_https,
         
         original_tweet_author: tweet.retweeted_status ? tweet.retweeted_status.user.screen_name : tweet.user.screen_name,
+        original_tweet_author_name: tweet.retweeted_status ? tweet.retweeted_status.user.name : tweet.user.name,
         original_tweet_profile_image_url: tweet.retweeted_status ? tweet.retweeted_status.user.profile_image_url_https : tweet.user.profile_image_url_https,
         original_tweet_id: tweet.retweeted_status ? tweet.retweeted_status.id_str : tweet.id_str,
         
@@ -118,7 +120,8 @@ module.exports = {
         tweet_media_entities: tweet_media_entities,
         tweet_type: type,
         retweet_count: tweet.retweeted_status ? tweet.retweeted_status.retweet_count : tweet.retweet_count,
-        favorite_count: tweet.retweeted_status ? tweet.retweeted_status.favorite_count : tweet.favorite_count
+        favorite_count: tweet.retweeted_status ? tweet.retweeted_status.favorite_count : tweet.favorite_count,
+        tweet_posted_at: tweet.retweeted_status ? tweet.retweeted_status.created_at : tweet.created_at
       };
     });
   }

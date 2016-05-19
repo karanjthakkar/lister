@@ -143,8 +143,10 @@ Response:
     {
       "tweet_id": "732431521215193089",
       "tweet_author": "geekykaran",
+      "tweet_author_name": "Karan Thakkar",
       "tweet_profile_image_url": "https://pbs.twimg.com/profile_images/728274649289785344/W1Ql2Zy__normal.jpg",
       "original_tweet_author": "webkit",
+      "original_tweet_author_name": "Webkit",
       "original_tweet_profile_image_url": "https://pbs.twimg.com/profile_images/627240677307383808/-nM6CaJ8_normal.png",
       "original_tweet_id": "728643624464883712",
       "tweet_text": "WebKit is now 100% ES6 complete according to @kangax’s handy table. 💯 https://t.co/Ncw6gh0uhw https://t.co/yyASsXanG4",
@@ -173,7 +175,8 @@ Response:
       ],
       "tweet_type": "retweet",
       "retweet_count": 1519,
-      "favorite_count": 1168
+      "favorite_count": 1168,
+      "tweet_posted_at": "Tue May 17 16:03:32 +0000 2016"
     }
   ]
 }

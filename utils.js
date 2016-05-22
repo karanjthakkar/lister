@@ -99,7 +99,9 @@ module.exports = {
             media_url: entity.media_url_https,
             display_url: entity.display_url,
             expanded_url: entity.expanded_url,
-            indices: entity.indices
+            indices: entity.indices,
+            type: entity.type,
+            aspectRatio: entity.sizes['large'].h / entity.sizes['large'].w
           };
         })
       }

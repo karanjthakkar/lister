@@ -120,22 +120,18 @@ exports.getUserLists = function(req, res) {
           });
         }
 
-        var lists_added = _.map(user.lists_added, function(item) {
-            return item.list_id;
-          }),
-          returnObj = [];
-
         returnObj = _.map(user_lists, function(item) {
           return {
             list_id: item.id_str,
-            list_mode: item.mode,
+            is_private: item.mode !== 'public',
             list_member_count: item.member_count,
             list_subscriber_count: item.subscriber_count,
             list_description: item.description,
             list_name: item.name,
             list_created_at: item.created_at,
-            list_added: _.contains(lists_added, item.id_str),
-            is_owner: item.user.id === userId
+            is_owner: item.user.id === userId,
+            list_owner_author: item.user.screen_name,
+            list_owner_profile_image_url: item.user.profile_image_url_https
           };
         });
         return res.status(200).json({

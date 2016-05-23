@@ -6,7 +6,7 @@ var config = {
     TWITTER_CONSUMER_SECRET: process.env.lister_consumer_secret,
     TWITTER_ACCESS_TOKEN: process.env.lister_access_token,
     TWITTER_ACCESS_TOKEN_SECRET: process.env.lister_access_token_secret,
-    frontendUrl: 'http://local.lister.co:4200'
+    frontendUrl: 'http://local.lister.co:3000'
   },
   staging: {
     callbackURL: '//api.lister.co/auth/twitter/callback',

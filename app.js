@@ -101,6 +101,10 @@ app.configure(function() {
   app.use(express.session({
     secret: 'tweetify-geekykaran-a2da059017ef619e25f6347bf04a3b41',
     maxAge: new Date(Date.now() + 3600000),
+    cookie: {
+      path: '/',
+      domain: '.tweetify.io'
+    },
     store: new MongoStore({
       mongooseConnection: mongoose.connection
     })

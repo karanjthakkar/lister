@@ -1,7 +1,7 @@
 {
   "name": "lister",
   "version": "0.0.1",
-  "description": "Lister - Tinder for Twitter Lists",
+  "description": "Lister - Browse Twitter Lists at ease",
   "main": "app.js",
   "scripts": {
     "test": "npm test"

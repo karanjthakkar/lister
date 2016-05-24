@@ -94,7 +94,10 @@ var allowCrossDomain = function(req, res, next) {
 // configure Express
 app.configure(function() {
   app.use(cookieParser());
-  app.use(bodyParser.json())
+  app.use(bodyParser.json());
+
+  app.set('view engine', 'ejs'); // set up ejs for templating
+
   app.use(express.session({
     secret: 'lister-geekykaran-a2da059017ef619e25f6347bf04a3b41',
     maxAge: new Date(Date.now() + 3600000),

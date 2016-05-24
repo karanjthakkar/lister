@@ -27,9 +27,17 @@ module.exports = function(app, passport) {
       failureRedirect: config.frontendUrl + '/?code=0'
     }),
     function(req, res) {
-      console.log(req.query);
       res.redirect(config.frontendUrl + '/?code=' + req.user.id);
     });
+
+  /**
+  * Client Side API's
+  */
+
+  // show the home page (will also have our login links)
+  app.get('/', function(req, res) {
+    res.render('index.ejs');
+  });
 
   app.post('/logout', function(req, res) {
     req.logout();
@@ -37,10 +45,6 @@ module.exports = function(app, passport) {
       success: true
     });
   });
-
-  /**
-  * Client Side API's
-  */
 
   //Get user profile
   app.get('/user/:id/profile', UserController.getUserData);
@@ -61,3 +65,13 @@ module.exports = function(app, passport) {
   app.post('/user/:id/tweet_action/:action/:tweet_id', UserController.doTweetAction);
 
 };
+
+
+
+// route middleware to ensure user is logged in
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+
+    res.redirect('/');
+}

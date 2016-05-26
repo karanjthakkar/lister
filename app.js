@@ -97,6 +97,7 @@ app.configure(function() {
   app.use(bodyParser.json());
 
   app.set('view engine', 'ejs'); // set up ejs for templating
+  app.set('views', __dirname+'/views');
 
   app.use(express.session({
     secret: 'tweetify-geekykaran-a2da059017ef619e25f6347bf04a3b41',

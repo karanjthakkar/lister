@@ -287,12 +287,35 @@ http://docs.mongodb.org/manual/tutorial/transparent-huge-pages/#transparent-huge
 
 ```
 http {
-    server {
-        listen 80;
-        server_name api.lister.co;
-        location / {
-            proxy_pass http://127.0.0.1:3000;
-        }
+
+  ##
+  # Logging Settings
+  ##
+
+  access_log /var/log/nginx/access.log;
+  error_log /var/log/nginx/error.log;
+
+  server {
+    listen 80;
+    server_name api.tweetify.io;
+    //location '/.well-known/acme-challenge' {
+    //  default_type "text/plain";
+    //  root /home/ubuntu/ssl-certs;
+    //}
+    location / {
+      return 301 https://$server_name$request_uri;
     }
+  }
+
+  server {
+    listen 443 ssl;
+    server_name api.tweetify.io;
+    ssl_certificate /etc/letsencrypt/live/api.tweetify.io/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.tweetify.io/privkey.pem;
+    add_header Strict-Transport-Security "max-age=31536000";
+    location / {
+      proxy_pass http://127.0.0.1:3000;
+    }
+  }
 }
 ```

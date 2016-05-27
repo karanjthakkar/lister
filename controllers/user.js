@@ -363,6 +363,7 @@ exports.getListStatuses = function(req, res) {
   var maxId = req.query.max_id;
 
   if(req.user && req.user.id !== userId) {
+    console.log(err, userId, listId, maxId);
     return res.status(403).json({
       message: 'You are not authorized to view this'
     });
@@ -372,6 +373,7 @@ exports.getListStatuses = function(req, res) {
       id: userId
     }, function(err, user) {
       if (err) {
+        console.log(err, userId, listId, maxId);
         return res.status(500).json({
           success: false,
           message: 'User not found'
@@ -388,6 +390,7 @@ exports.getListStatuses = function(req, res) {
       utils.getListTimeline(T, listId, maxId, function(err, listStatuses) {
 
         if (err) {
+          console.log(err, userId, listId, maxId);
           return res.status(500).json({
             success: false,
             message: 'Error fetching user list statuses'

@@ -12,9 +12,8 @@ var mongoose = require('mongoose'),
 config = config[argv['environment'] || 'local'];
 
 exports.saveOrUpdateUserData = function(userData, done) {
-
+  console.log(Date.now() + ' saveOrUpdateUserData: ');
   var user;
-
   //Update or add new user to collection
   User.findOne({
     id: userData.id
@@ -23,6 +22,7 @@ exports.saveOrUpdateUserData = function(userData, done) {
       return done(err); //If some error, return it
     } else {
       if (!user) { //Check if user is present in db. If not, create a new user
+        console.log(Date.now() + ' New User Created: ' + userData.id_str);
         var now = Date.now();
         userData = _.extend(userData, {
           created_at: now,
@@ -30,6 +30,7 @@ exports.saveOrUpdateUserData = function(userData, done) {
         });
         user = new User(userData);
       } else { //Else update existing user
+        console.log(Date.now() + ' Existing User Login: ' + userData.id_str);
         _.forOwn(userData, function(value, key) {
           user[key] = userData[key];
         });
@@ -88,6 +89,7 @@ exports.getUserData = function(req, res) {
 
 exports.getUserLists = function(req, res) {
   var userId = parseInt(req.params.id);
+  console.log(Date.now() + ' getUserLists called by ' + userId + ' for ' + req.user.id);
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({
       message: 'You are not authorized to view this'
@@ -258,6 +260,7 @@ exports.doTweetAction = function(req, res) {
   var userId = parseInt(req.params.id);
   var action = req.params.action;
   var tweetId = req.params.tweet_id;
+  console.log(Date.now() + ' doTweetAction called by ' + userId + ' for ' + req.user.id + ' with action ' + action + ' for tweetId ' + tweetId);
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({
       message: 'You are not authorized to view this'
@@ -361,7 +364,7 @@ exports.getListStatuses = function(req, res) {
   var userId = parseInt(req.params.id);
   var listId = req.params.list_id;
   var maxId = req.query.max_id;
-
+  console.log(Date.now() + ' doTweetAction called by ' + userId + ' for ' + req.user.id + ' for list ' + listId + ' with maxId ' + maxId);
   if(req.user && req.user.id !== userId) {
     console.log(err, userId, listId, maxId);
     return res.status(403).json({

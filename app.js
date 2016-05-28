@@ -84,15 +84,6 @@ passport.use(new TwitterStrategy({
   }
 ));
 
-//CORS middleware
-var allowCrossDomain = function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', config.frontendUrl);
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.header("Access-Control-Allow-Credentials", "true");
-  next();
-}
-
 // configure Express
 app.configure(function() {
   app.use(cookieParser());
@@ -116,7 +107,6 @@ app.configure(function() {
   // persistent login sessions (recommended).
   app.use(passport.initialize());
   app.use(passport.session());
-  app.use(allowCrossDomain);
   app.use(app.router);
 });
 

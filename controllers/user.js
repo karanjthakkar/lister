@@ -400,16 +400,18 @@ exports.getListStatuses = function(req, res) {
           });
         }
 
-        var nextMaxId = null;
+        var nextMaxId = null,
+          responseJson = {
+            success: true,
+            data: utils.filterAndBuildTweetsForClient(listStatuses, user.tweets_seen),
+          };
+
         if (listStatuses.length > 0) {
           nextMaxId = new BigNumber(listStatuses[listStatuses.length - 1].id_str)
+          responseJson.next_max_id = nextMaxId.minus(1);
         }
 
-        return res.status(200).json({
-          success: true,
-          data: utils.filterAndBuildTweetsForClient(listStatuses, user.tweets_seen),
-          next_max_id: nextMaxId.minus(1)
-        });
+        return res.status(200).json(responseJson);
       });
     });
   } else {

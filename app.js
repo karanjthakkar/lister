@@ -42,6 +42,7 @@ passport.deserializeUser(function(obj, done) {
   User.findOne({
     id: obj.id
   }, function(err, user) {
+    console.log('Session received: ' + obj);
     var userObj = {
       id: user.id,
       username: user.username

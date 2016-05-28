@@ -62,7 +62,7 @@ module.exports = function(app, passport) {
   app.delete('/user/:id/lists_added/:list_id', UserController.removeListItem);
 
   //Fav/RT/Discard Tweet
-  app.post('/user/:id/tweet_action/:action/:tweet_id', UserController.doTweetAction);
+  app.get('/user/:id/tweet_action/:action/:tweet_id', UserController.doTweetAction);
 
 };
 

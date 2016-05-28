@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
 config = config[argv['environment'] || 'local'];
 
 exports.saveOrUpdateUserData = function(userData, done) {
-  console.log(Date.now() + ' saveOrUpdateUserData: ');
+  console.log(Date.now() + ' saveOrUpdateUserData: ' + userData.id);
   var user;
   //Update or add new user to collection
   User.findOne({
@@ -89,6 +89,7 @@ exports.getUserData = function(req, res) {
 
 exports.getUserLists = function(req, res) {
   var userId = parseInt(req.params.id);
+  console.log('Cookie: ', req.headers.cookie);
   console.log(Date.now() + ' getUserLists called by ' + userId + ' for ' + (req.user && JSON.stringify(req.user)));
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({
@@ -260,6 +261,7 @@ exports.doTweetAction = function(req, res) {
   var userId = parseInt(req.params.id);
   var action = req.params.action;
   var tweetId = req.params.tweet_id;
+  console.log('Cookie: ', req.headers.cookie);
   console.log(Date.now() + ' doTweetAction called by ' + userId + ' for ' + (req.user && JSON.stringify(req.user)) + ' with action ' + action + ' for tweetId ' + tweetId);
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({
@@ -364,6 +366,7 @@ exports.getListStatuses = function(req, res) {
   var userId = parseInt(req.params.id);
   var listId = req.params.list_id;
   var maxId = req.query.max_id;
+  console.log('Cookie: ', req.headers.cookie);
   console.log(Date.now() + ' getListStatuses called by ' + userId + ' for ' + (req.user && JSON.stringify(req.user)) + ' for list ' + listId + ' with maxId ' + maxId);
   if(req.user && req.user.id !== userId) {
     console.log(err, userId, listId, maxId);

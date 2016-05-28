@@ -35,6 +35,7 @@ var User = mongoose.model('User');
 // have a database of user records, the complete Twitter profile is serialized
 // and deserialized.
 passport.serializeUser(function(user, done) {
+  console.log('Session serialize: ' + user && JSON.stringify(user));
   done(null, user);
 });
 
@@ -42,7 +43,7 @@ passport.deserializeUser(function(obj, done) {
   User.findOne({
     id: obj.id
   }, function(err, user) {
-    console.log('Session received: ' + obj);
+    console.log('Session deserialize: ' + user && JSON.stringify(user));
     var userObj = {
       id: user.id,
       username: user.username

@@ -260,7 +260,7 @@ exports.doTweetAction = function(req, res) {
   var userId = parseInt(req.params.id);
   var action = req.params.action;
   var tweetId = req.params.tweet_id;
-  console.log(Date.now() + ' doTweetAction called by ' + userId + ' for ' + req.user && JSON.stringify(req.user) + ' with action ' + action + ' for tweetId ' + tweetId);
+  console.log(Date.now() + ' doTweetAction called by ' + userId + ' for ' + (req.user && JSON.stringify(req.user)) + ' with action ' + action + ' for tweetId ' + tweetId);
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({
       message: 'You are not authorized to view this'

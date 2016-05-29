@@ -51,6 +51,8 @@ exports.getUserData = function(req, res) {
   var userId = parseInt(req.params.id);
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({
+      code: 1,
+      success: false,
       message: 'You are not authorized to view this'
     });
   }
@@ -92,6 +94,8 @@ exports.getUserLists = function(req, res) {
   console.log(Date.now() + ' getUserLists called by ' + userId + ' for ' + (req.user && JSON.stringify(req.user)));
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({
+      code: 1,
+      success: false,
       message: 'You are not authorized to view this'
     });
   }
@@ -151,6 +155,8 @@ exports.addListItem = function(req, res) {
   var userId = parseInt(req.params.id);
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({
+      code: 1,
+      success: false,
       message: 'You are not authorized to view this'
     });
   }
@@ -217,6 +223,8 @@ exports.removeListItem = function(req, res) {
   var userId = parseInt(req.params.id);
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({
+      code: 1,
+      success: false,
       message: 'You are not authorized to view this'
     });
   }
@@ -263,6 +271,8 @@ exports.doTweetAction = function(req, res) {
   console.log(Date.now() + ' doTweetAction called by ' + userId + ' for ' + (req.user && JSON.stringify(req.user)) + ' with action ' + action + ' for tweetId ' + tweetId);
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({
+      code: 1,
+      success: false,
       message: 'You are not authorized to view this'
     });
   }
@@ -368,6 +378,8 @@ exports.getListStatuses = function(req, res) {
   if(req.user && req.user.id !== userId) {
     console.log(err, userId, listId, maxId);
     return res.status(403).json({
+      code: 1,
+      success: false,
       message: 'You are not authorized to view this'
     });
   }
@@ -422,6 +434,7 @@ exports.getListStatuses = function(req, res) {
 
 function respondToUnauthenticatedRequests(res) {
   res.status(403).json({
+    code: 1,
     success: false,
     message: 'You are not logged in. Please login to continue'
   });

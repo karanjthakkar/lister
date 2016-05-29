@@ -285,34 +285,34 @@ exports.doTweetAction = function(req, res) {
       }
 
       // Check if is already taken action on
-      var isAlreadyAdded = _.some(user.tweets_seen, function(tweet) {
-        return (tweet.tweet_id === tweetId && tweet.tweet_action === action);
-      });
-      if (isAlreadyAdded) {
-        return res.status(200).json({
-          success: true
-        });
-      }
+      // var isAlreadyAdded = _.some(user.tweets_seen, function(tweet) {
+      //   return (tweet.tweet_id === tweetId && tweet.tweet_action === action);
+      // });
+      // if (isAlreadyAdded) {
+      //   return res.status(200).json({
+      //     success: true
+      //   });
+      // }
 
       // If discard, store it in our db and reply success
-      if (action === 'discard') {
-        var tweetObject = {
-          tweet_action: 'discard',
-          tweet_id: tweetId
-        };
-        user.tweets_seen.push(tweetObject);
-        user.save(function(err, data) {
-          if (err) {
-            return res.status(500).json({
-              success: false,
-              message: 'Error performing discard'
-            });
-          }
-          return res.status(200).json({
-            success: true
-          });
-        });
-      } else {
+      // if (action === 'discard') {
+      //   var tweetObject = {
+      //     tweet_action: 'discard',
+      //     tweet_id: tweetId
+      //   };
+      //   user.tweets_seen.push(tweetObject);
+      //   user.save(function(err, data) {
+      //     if (err) {
+      //       return res.status(500).json({
+      //         success: false,
+      //         message: 'Error performing discard'
+      //       });
+      //     }
+      //     return res.status(200).json({
+      //       success: true
+      //     });
+      //   });
+      // } else {
         var T = new Twit({
           consumer_key: config.TWITTER_CONSUMER_KEY,
           consumer_secret: config.TWITTER_CONSUMER_SECRET,
@@ -321,38 +321,38 @@ exports.doTweetAction = function(req, res) {
         });
         utils[action](T, tweetId, function(err, list) {
           if (err) {
-            if (
-                err.code === 139 // Already fav
-                || err.code === 327 // Already RT
-              ) {
-                return res.status(200).json({
-                  success: true
-                });
-            } else {
+            // if (
+            //     err.code === 139 // Already fav
+            //     || err.code === 327 // Already RT
+            //   ) {
+            //     return res.status(200).json({
+            //       success: true
+            //     });
+            // } else {
               return res.status(500).json({
                 success: false,
                 message: 'Error performing ' + action
               });
-            }
+            // }
           }
-          var tweetObject = {
-            tweet_action: action,
-            tweet_id: tweetId
-          };
-          user.tweets_seen.push(tweetObject);
-          user.save(function(err, data) {
-            if (err) {
-              return res.status(500).json({
-                success: false,
-                message: 'Error saving to DB'
-              });
-            }
+          // var tweetObject = {
+          //   tweet_action: action,
+          //   tweet_id: tweetId
+          // };
+          // user.tweets_seen.push(tweetObject);
+          // user.save(function(err, data) {
+          //   if (err) {
+          //     return res.status(500).json({
+          //       success: false,
+          //       message: 'Error saving to DB'
+          //     });
+          //   }
             return res.status(200).json({
               success: true
             });
-          });
+          // });
         });
-      }
+      // }
 
     })
   } else {

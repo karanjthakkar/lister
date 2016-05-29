@@ -51,7 +51,7 @@ module.exports = {
   },
 
   filterAndBuildTweetsForClient: function(listStatuses, tweetsSeen) {
-    listStatuses = this.filterAlreadySeenTweets(listStatuses, tweetsSeen);
+    // listStatuses = this.filterAlreadySeenTweets(listStatuses, tweetsSeen);
     return this.buildTweetsForClient(listStatuses);
   },
 

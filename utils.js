@@ -20,6 +20,24 @@ module.exports = {
     });
   },
 
+  unfavorite: function(T, id, callback) {
+    T.post('favorites/destroy', {
+      id: id,
+      include_entities: false
+    }, function(err, data) {
+      callback(err, data);
+    });
+  },
+
+  unretweet: function(T, id, callback) {
+    T.post('statuses/unretweet', {
+      id: id,
+      include_entities: false
+    }, function(err, data) {
+      callback(err, data);
+    });
+  },
+
   getUserLists: function(T, callback) {
     T.get('lists/list', {
       reverse: true
@@ -111,6 +129,8 @@ module.exports = {
         tweet_author: tweet.user.screen_name,
         tweet_author_name: tweet.user.name,
         tweet_profile_image_url: tweet.user.profile_image_url_https,
+        favorited: tweet.favorited,
+        retweeted: tweet.retweeted,
         
         original_tweet_author: tweet.retweeted_status ? tweet.retweeted_status.user.screen_name : tweet.user.screen_name,
         original_tweet_author_name: tweet.retweeted_status ? tweet.retweeted_status.user.name : tweet.user.name,

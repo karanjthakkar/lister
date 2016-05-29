@@ -277,7 +277,7 @@ exports.doTweetAction = function(req, res) {
         });
       }
 
-      if (['favorite', 'retweet', 'discard'].indexOf(action) === -1) {
+      if (['favorite', 'retweet', 'discard', 'unretweet', 'unfavorite'].indexOf(action) === -1) {
         return res.status(500).json({
           success: false,
           message: 'Provide a valid action'

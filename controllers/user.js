@@ -339,6 +339,7 @@ exports.doTweetAction = function(req, res) {
             //       success: true
             //     });
             // } else {
+              console.log(Date.now() + ' Tweet Action Error: ' + err.code + ' ' + err.message);
               return res.status(500).json({
                 success: false,
                 message: 'Error performing ' + action

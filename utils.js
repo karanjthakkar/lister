@@ -93,7 +93,8 @@ module.exports = {
         tweetForEntities = tweet,
         tweet_url_entities = [],
         tweet_media_entities = [],
-        quoted_tweet_media_entities = [];
+        quoted_tweet_media_entities = [],
+        quoted_tweet_url_entities = [];
 
       if (tweet.is_quote_status) {
         quotedTweetObject = tweet.quoted_status || tweet.retweeted_status.quoted_status;
@@ -107,6 +108,21 @@ module.exports = {
       if (tweet.is_quote_status
           && (quotedTweetObject.entities && quotedTweetObject.entities.media)) {
         quoted_tweet_media_entities = quotedTweetObject.entities.media.map(function(entity) {
+          return {
+            url: entity.url,
+            media_url: entity.media_url_https,
+            display_url: entity.display_url,
+            expanded_url: entity.expanded_url,
+            indices: entity.indices,
+            type: entity.type,
+            aspectRatio: entity.sizes['large'].h / entity.sizes['large'].w
+          };
+        })
+      }
+
+      if (tweet.is_quote_status
+          && (quotedTweetObject.entities && quotedTweetObject.entities.urls)) {
+        quoted_tweet_url_entities = quotedTweetObject.entities.urls.map(function(entity) {
           return {
             url: entity.url,
             media_url: entity.media_url_https,
@@ -171,6 +187,7 @@ module.exports = {
           tweet_author: quotedTweetObject.user.screen_name,
           tweet_author_name: quotedTweetObject.user.name,
           tweet_media_entities: quoted_tweet_media_entities,
+          tweet_url_entities: quoted_tweet_url_entities,
           tweet_text: getTweetText(quotedTweetObject),
         } : null
       };

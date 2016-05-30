@@ -331,20 +331,20 @@ exports.doTweetAction = function(req, res) {
         });
         utils[action](T, tweetId, function(err, list) {
           if (err) {
-            // if (
-            //     err.code === 139 // Already fav
-            //     || err.code === 327 // Already RT
-            //   ) {
-            //     return res.status(200).json({
-            //       success: true
-            //     });
-            // } else {
-              console.log(Date.now() + ' Tweet Action Error: ' + err.code + ' ' + err.message);
+            console.log(Date.now() + ' Tweet Action Error (' + err.code + ': ' + err.message + ')');
+            if (
+                err.code === 139 // Already fav
+                || err.code === 327 // Already RT
+              ) {
+                return res.status(200).json({
+                  success: true
+                });
+            } else {
               return res.status(500).json({
                 success: false,
                 message: 'Error performing ' + action
               });
-            // }
+            }
           }
           // var tweetObject = {
           //   tweet_action: action,

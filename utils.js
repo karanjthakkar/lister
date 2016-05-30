@@ -92,11 +92,31 @@ module.exports = {
       var type = 'original',
         tweetForEntities = tweet,
         tweet_url_entities = [],
-        tweet_media_entities = [];
+        tweet_media_entities = [],
+        quoted_tweet_media_entities = [];
+
+      if (tweet.is_quote_status) {
+        quotedTweetObject = tweet.quoted_status || tweet.retweeted_status.quoted_status;
+      }
 
       if (tweet.retweeted_status) {
         type = 'retweet',
         tweetForEntities = tweet.retweeted_status;
+      }
+
+      if (tweet.is_quote_status
+          && (quotedTweetObject.entities && quotedTweetObject.entities.media)) {
+        quoted_tweet_media_entities = quotedTweetObject.entities.media.map(function(entity) {
+          return {
+            url: entity.url,
+            media_url: entity.media_url_https,
+            display_url: entity.display_url,
+            expanded_url: entity.expanded_url,
+            indices: entity.indices,
+            type: entity.type,
+            aspectRatio: entity.sizes['large'].h / entity.sizes['large'].w
+          };
+        })
       }
 
       if (tweetForEntities.entities && tweetForEntities.entities.urls) {
@@ -131,7 +151,7 @@ module.exports = {
         tweet_profile_image_url: tweet.user.profile_image_url_https,
         favorited: tweet.favorited,
         retweeted: tweet.retweeted,
-        
+
         original_tweet_author: tweet.retweeted_status ? tweet.retweeted_status.user.screen_name : tweet.user.screen_name,
         original_tweet_author_name: tweet.retweeted_status ? tweet.retweeted_status.user.name : tweet.user.name,
         original_tweet_profile_image_url: tweet.retweeted_status ? tweet.retweeted_status.user.profile_image_url_https : tweet.user.profile_image_url_https,
@@ -143,7 +163,16 @@ module.exports = {
         tweet_type: type,
         retweet_count: tweet.retweeted_status ? tweet.retweeted_status.retweet_count : tweet.retweet_count,
         favorite_count: tweet.retweeted_status ? tweet.retweeted_status.favorite_count : tweet.favorite_count,
-        tweet_posted_at: tweet.retweeted_status ? tweet.retweeted_status.created_at : tweet.created_at
+        tweet_posted_at: tweet.retweeted_status ? tweet.retweeted_status.created_at : tweet.created_at,
+
+        is_quote_status: tweet.is_quote_status,
+        quoted_status: tweet.is_quote_status ? {
+          tweet_id: quotedTweetObject.id_str,
+          tweet_author: quotedTweetObject.user.screen_name,
+          tweet_author_name: quotedTweetObject.user.name,
+          tweet_media_entities: quoted_tweet_media_entities,
+          tweet_text: getTweetText(quotedTweetObject),
+        } : null
       };
     });
   }

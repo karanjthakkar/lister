@@ -125,12 +125,9 @@ module.exports = {
         quoted_tweet_url_entities = quotedTweetObject.entities.urls.map(function(entity) {
           return {
             url: entity.url,
-            media_url: entity.media_url_https,
             display_url: entity.display_url,
             expanded_url: entity.expanded_url,
-            indices: entity.indices,
-            type: entity.type,
-            aspectRatio: entity.sizes['large'].h / entity.sizes['large'].w
+            indices: entity.indices
           };
         })
       }

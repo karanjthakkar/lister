@@ -24,10 +24,10 @@ module.exports = function(app, passport) {
   // which, in this example, will redirect the user to the home page.
   app.get('/auth/twitter/callback',
     passport.authenticate('twitter', {
-      failureRedirect: config.frontendUrl + '/?code=0'
+      failureRedirect: config.frontendUrl + '/?error=1'
     }),
     function(req, res) {
-      res.redirect(config.frontendUrl + '/?code=' + req.user.id);
+      res.redirect(config.frontendUrl + '/?error=0&userId=' + req.user.id + '&username=' + req.user.username);
     });
 
   /**

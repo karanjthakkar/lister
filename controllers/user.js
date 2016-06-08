@@ -6,7 +6,10 @@ var mongoose = require('mongoose'),
   utils = require('../utils'),
   User = mongoose.model('User'),
   argv = require('minimist')(process.argv.slice(2)),
-  config = require('../config');
+  config = require('../config'),
+  Slack = require('node-slack');
+
+var slack = new Slack('https://hooks.slack.com/services/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');
 
 //Setup config based on environment
 config = config[argv['environment'] || 'local'];
@@ -28,6 +31,36 @@ exports.saveOrUpdateUserData = function(userData, done) {
           created_at: now,
           last_access_date: now
         });
+
+        slack.send({
+          text: `${userData.name} (@${userData.username}) signed up :boom:`,
+          attachments: [{
+            fallback: `${userData.name} (@${userData.username}) signed up :boom:`,
+            color: 'good',
+            fields:[{
+              title: 'Followers',
+              value: userData.followers,
+              short: true
+            }, {
+              title: 'Following',
+              value: userData.following,
+              short: true
+            }, {
+              title: 'Lists',
+              value: userData.lists,
+              short: true
+            }, {
+              title: 'Location',
+              value: userData.location,
+              short: true
+            }, {
+              title: 'Description',
+              value: userData.description,
+              short: false
+            }]
+          }]
+        });
+
         user = new User(userData);
       } else { //Else update existing user
         console.log(Date.now() + ' Existing User Login: ' + userData.id_str);

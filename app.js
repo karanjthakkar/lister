@@ -42,11 +42,15 @@ passport.deserializeUser(function(obj, done) {
   User.findOne({
     id: obj.id
   }, function(err, user) {
-    var userObj = {
-      id: user.id,
-      username: user.username
-    };
-    done(null, userObj);
+    if (user) {
+      var userObj = {
+        id: user.id,
+        username: user.username
+      };
+      done(null, userObj);
+    } else {
+      done(null, {});
+    }
   })
 });
 
@@ -71,6 +75,7 @@ passport.use(new TwitterStrategy({
         favorites: profile._json.favourites_count,
         statuses: profile._json.statuses_count,
         lists: profile._json.listed_count,
+        location: profile._json.location,
         profile_image_url: profile._json.profile_image_url_https || profile._json.profile_image_url,
         profile_banner_url: profile._json.profile_banner_url,
         twitter_token: token,

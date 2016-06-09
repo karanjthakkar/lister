@@ -298,10 +298,7 @@ http {
   server {
     listen 80;
     server_name api.tweetify.io;
-    //location '/.well-known/acme-challenge' {
-    //  default_type "text/plain";
-    //  root /home/ubuntu/ssl-certs;
-    //}
+
     location / {
       return 301 https://$server_name$request_uri;
     }

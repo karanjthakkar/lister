@@ -1,0 +1,1 @@
+"use strict";$(".flexslider").flexslider({animation:"slide",direction:"horizontal",reverse:!1,animationLoop:!0,smoothHeight:!1,startAt:0,slideshow:!0,controlNav:!1,directionNav:!1,slideshowSpeed:4e3,animationSpeed:300});

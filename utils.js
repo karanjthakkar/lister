@@ -94,7 +94,9 @@ module.exports = {
         tweet_url_entities = [],
         tweet_media_entities = [],
         quoted_tweet_media_entities = [],
-        quoted_tweet_url_entities = [];
+        quoted_tweet_url_entities = [],
+        in_reply_to_author = null,
+        in_reply_to_author_name = null;
 
       if (tweet.is_quote_status) {
         quotedTweetObject = tweet.quoted_status || tweet.retweeted_status.quoted_status;
@@ -103,6 +105,14 @@ module.exports = {
       if (tweet.retweeted_status) {
         type = 'retweet',
         tweetForEntities = tweet.retweeted_status;
+      }
+
+      if (tweet.in_reply_to_screen_name) {
+        const replyAuthorEntity = tweet.entities.user_mentions.filter((item) => {
+          return item.screen_name === tweet.in_reply_to_screen_name;
+        });
+        in_reply_to_author = tweet.in_reply_to_screen_name;
+        in_reply_to_author_name = replyAuthorEntity[0].name;
       }
 
       if (tweet.is_quote_status
@@ -169,6 +179,9 @@ module.exports = {
         original_tweet_author_name: tweet.retweeted_status ? tweet.retweeted_status.user.name : tweet.user.name,
         original_tweet_profile_image_url: tweet.retweeted_status ? tweet.retweeted_status.user.profile_image_url_https : tweet.user.profile_image_url_https,
         original_tweet_id: tweet.retweeted_status ? tweet.retweeted_status.id_str : tweet.id_str,
+
+        in_reply_to_author,
+        in_reply_to_author_name,
         
         tweet_text: getTweetText(tweet),
         tweet_url_entities: tweet_url_entities,

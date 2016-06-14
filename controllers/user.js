@@ -122,9 +122,9 @@ exports.getUserData = function(req, res) {
   }
 };
 
-exports.getUserLists = function(req, res) {
+exports.getUserAllLists = function(req, res) {
   var userId = parseInt(req.params.id);
-  console.log(Date.now() + ' getUserLists called by ' + userId + ' for ' + (req.user && JSON.stringify(req.user)));
+  console.log(Date.now() + ' getUserAllLists called by ' + userId + ' for ' + (req.user && JSON.stringify(req.user)));
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({
       code: 1,
@@ -177,6 +177,52 @@ exports.getUserLists = function(req, res) {
           success: true,
           data: returnObj
         });
+      });
+    });
+  } else {
+    respondToUnauthenticatedRequests(res);
+  }
+};
+
+exports.getUserFavoriteLists = function(req, res) {
+  var userId = parseInt(req.params.id);
+  console.log(Date.now() + ' getUserFavoriteLists called by ' + userId + ' for ' + (req.user && JSON.stringify(req.user)));
+  if(req.user && req.user.id !== userId) {
+    return res.status(403).json({
+      code: 1,
+      success: false,
+      message: 'You are not authorized to view this'
+    });
+  }
+  if (req.isAuthenticated()) {
+    User.findOne({
+      id: userId
+    }, function(err, user) {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          message: 'User not found'
+        });
+      }
+
+      var returnObj = _.map(user.lists_added, function(item) {
+        return {
+          list_id: item.id_str,
+          is_private: item.mode !== 'public',
+          list_member_count: item.member_count,
+          list_subscriber_count: item.subscriber_count,
+          list_description: item.description,
+          list_name: item.name,
+          list_created_at: item.created_at,
+          is_owner: item.user.id === userId,
+          list_owner_author: item.user.screen_name,
+          list_owner_profile_image_url: item.user.profile_image_url_https
+        };
+      });
+
+      return res.status(200).json({
+        success: true,
+        data: returnObj
       });
     });
   } else {

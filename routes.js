@@ -52,14 +52,17 @@ module.exports = function(app, passport) {
   //Get user list statuses form twitter
   app.get('/user/:id/list/:list_id/statuses', UserController.getListStatuses);
 
-  //Get user lists from twitter
-  app.get('/user/:id/lists', UserController.getUserLists);
+  //Get user all lists from twitter
+  app.get('/user/:id/lists/all', UserController.getUserAllLists);
+
+  //Get user favorite lists
+  app.get('/user/:id/lists/favorites', UserController.getUserFavoriteLists);
 
   //Add list
-  app.put('/user/:id/lists_added/:list_id', UserController.addListItem);
+  app.put('/user/:id/lists/:list_id/favorite', UserController.addListItem);
 
   //Remove list
-  app.delete('/user/:id/lists_added/:list_id', UserController.removeListItem);
+  app.delete('/user/:id/lists/:list_id/unfavorite', UserController.removeListItem);
 
   //Fav/RT/Discard Tweet
   app.post('/user/:id/tweet_action/:action/:tweet_id', UserController.doTweetAction);

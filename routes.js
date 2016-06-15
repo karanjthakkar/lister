@@ -53,6 +53,7 @@ module.exports = function(app, passport) {
   app.get('/user/:id/list/:list_id/statuses', UserController.getListStatuses);
 
   //Get user all lists from twitter
+  app.get('/user/:id/lists', UserController.getUserAllLists);
   app.get('/user/:id/lists/all', UserController.getUserAllLists);
 
   //Get user favorite lists

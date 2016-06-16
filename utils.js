@@ -96,10 +96,13 @@ module.exports = {
         quoted_tweet_media_entities = [],
         quoted_tweet_url_entities = [],
         in_reply_to_author = null,
-        in_reply_to_author_name = null;
+        in_reply_to_author_name = null,
+        is_quote_status = tweet.is_quote_status;
 
-      if (tweet.is_quote_status) {
-        quotedTweetObject = tweet.quoted_status || tweet.retweeted_status.quoted_status;
+      if (is_quote_status) {
+        quotedTweetObject = tweet.quoted_status
+                            || tweet.retweeted_status.quoted_status
+                            || (is_quote_status = false) /* Add fallback for deleted quoted status */;
       }
 
       if (tweet.retweeted_status) {
@@ -121,8 +124,8 @@ module.exports = {
         }
       }
 
-      if (tweet.is_quote_status
-          && (quotedTweetObject.entities && quotedTweetObject.entities.media)) {
+      if (is_quote_status
+          && (quotedTweetObject && quotedTweetObject.entities && quotedTweetObject.entities.media)) {
         quoted_tweet_media_entities = quotedTweetObject.entities.media.map(function(entity) {
           return {
             url: entity.url,
@@ -136,8 +139,8 @@ module.exports = {
         })
       }
 
-      if (tweet.is_quote_status
-          && (quotedTweetObject.entities && quotedTweetObject.entities.urls)) {
+      if (is_quote_status
+          && (quotedTweetObject && quotedTweetObject.entities && quotedTweetObject.entities.urls)) {
         quoted_tweet_url_entities = quotedTweetObject.entities.urls.map(function(entity) {
           return {
             url: entity.url,
@@ -197,8 +200,8 @@ module.exports = {
         favorite_count: tweet.retweeted_status ? tweet.retweeted_status.favorite_count : tweet.favorite_count,
         tweet_posted_at: tweet.retweeted_status ? tweet.retweeted_status.created_at : tweet.created_at,
 
-        is_quote_status: tweet.is_quote_status,
-        quoted_status: tweet.is_quote_status ? {
+        is_quote_status: is_quote_status,
+        quoted_status: is_quote_status ? {
           tweet_id: quotedTweetObject.id_str,
           tweet_author: quotedTweetObject.user.screen_name,
           tweet_author_name: quotedTweetObject.user.name,

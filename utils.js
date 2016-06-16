@@ -115,8 +115,9 @@ module.exports = {
           in_reply_to_author = tweet.in_reply_to_screen_name;
           in_reply_to_author_name = replyAuthorEntity[0].name;
         } else if (tweet.user.screen_name === tweet.in_reply_to_screen_name) {
-          in_reply_to_author = tweet.screen_name;
-          in_reply_to_author_name = tweet.name;
+
+          in_reply_to_author = tweet.user.screen_name;
+          in_reply_to_author_name = tweet.user.name;
         }
       }
 

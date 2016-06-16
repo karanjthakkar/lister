@@ -111,8 +111,13 @@ module.exports = {
         const replyAuthorEntity = tweet.entities.user_mentions.filter((item) => {
           return item.screen_name === tweet.in_reply_to_screen_name;
         });
-        in_reply_to_author = tweet.in_reply_to_screen_name;
-        in_reply_to_author_name = replyAuthorEntity[0].name;
+        if (replyAuthorEntity.length > 0) {
+          in_reply_to_author = tweet.in_reply_to_screen_name;
+          in_reply_to_author_name = replyAuthorEntity[0].name;
+        } else if (tweet.user.screen_name === tweet.in_reply_to_screen_name) {
+          in_reply_to_author = tweet.screen_name;
+          in_reply_to_author_name = tweet.name;
+        }
       }
 
       if (tweet.is_quote_status

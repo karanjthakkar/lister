@@ -454,6 +454,7 @@ exports.getListStatuses = function(req, res) {
   var userId = parseInt(req.params.id);
   var listId = req.params.list_id;
   var maxId = req.query.max_id;
+  var error = false;
   console.log(Date.now() + ' getListStatuses called by ' + userId + ' for ' + (req.user && JSON.stringify(req.user)) + ' for list ' + listId + ' with maxId ' + maxId);
   if(req.user && req.user.id !== userId) {
     console.log(err, userId, listId, maxId);
@@ -492,18 +493,36 @@ exports.getListStatuses = function(req, res) {
           });
         }
 
-        var nextMaxId = null,
-          responseJson = {
-            success: true,
-            data: utils.filterAndBuildTweetsForClient(listStatuses, user.tweets_seen),
-          };
-
-        if (listStatuses.length > 0) {
-          nextMaxId = new BigNumber(listStatuses[listStatuses.length - 1].id_str)
-          responseJson.next_max_id = nextMaxId.minus(1);
+        try {
+          var tweets = utils.filterAndBuildTweetsForClient(listStatuses, user.tweets_seen);
+        } catch(error) {
+          slack.send({
+            text: '```' + error.stack + '```',
+            channel: 'server-errors',
+            username: 'error-bot'
+          });
+          error = true;
         }
 
-        return res.status(200).json(responseJson);
+        if (error) {
+          return res.status(500).json({
+            success: false,
+            message: 'Internal Server Error'
+          });
+        } else {
+          var nextMaxId = null,
+            responseJson = {
+              success: true,
+              data: tweets,
+            };
+
+          if (listStatuses.length > 0) {
+            nextMaxId = new BigNumber(listStatuses[listStatuses.length - 1].id_str)
+            responseJson.next_max_id = nextMaxId.minus(1);
+          }
+
+          return res.status(200).json(responseJson);
+        }
       });
     });
   } else {

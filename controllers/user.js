@@ -33,7 +33,7 @@ exports.saveOrUpdateUserData = function(userData, done) {
         });
 
         slack.send({
-          text: `${userData.name} (@${userData.username}) signed up :boom:`,
+          text: `<https://twitter.com/${userData.username}|${userData.name}> (<https://twitter.com/${userData.username}|@${userData.username}>) signed up :boom:`,
           attachments: [{
             fallback: `${userData.name} (@${userData.username}) signed up :boom:`,
             color: 'good',

@@ -279,17 +279,17 @@ exports.addListToFavorites = function(req, res) {
           });
         }
         var listObject = {
-          list_id: lisst.id_str,
-          is_private: lisst.mode !== 'public',
-          is_favorited: lisst.is_favorited || false,
-          list_member_count: lisst.member_count,
-          list_subscriber_count: lisst.subscriber_count,
-          list_description: lisst.description,
-          list_name: lisst.name,
-          list_created_at: lisst.created_at,
-          is_owner: lisst.user.id === userId,
-          list_owner_author: lisst.user.screen_name,
-          list_owner_profile_image_url: lisst.user.profile_image_url_https
+          list_id: list.id_str,
+          is_private: list.mode !== 'public',
+          is_favorited: list.is_favorited || false,
+          list_member_count: list.member_count,
+          list_subscriber_count: list.subscriber_count,
+          list_description: list.description,
+          list_name: list.name,
+          list_created_at: list.created_at,
+          is_owner: list.user.id === userId,
+          list_owner_author: list.user.screen_name,
+          list_owner_profile_image_url: list.user.profile_image_url_https
         };
         user.lists_favorited.push(listObject);
         user.save(function(err, data) {

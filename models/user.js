@@ -29,16 +29,18 @@ var UserSchema = new Schema({
   created_at: Number,
   lists_favorited: [{
     list_id: String,
-    list_mode: String, //"private", "public"
+    is_private: String,
     list_member_count: String,
     list_subscriber_count: String,
     list_description: String,
     list_name: String,
-    list_created_at: String,
-    list_added_at: {
+    list_created_at: {
       type: String,
       default: Date.now
-    }
+    },
+    is_owner: Boolean,
+    list_owner_author: String,
+    list_owner_profile_image_url: String
   }],
   tweets_seen: [{
     tweet_id: String,

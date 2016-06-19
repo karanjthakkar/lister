@@ -29,7 +29,7 @@ var UserSchema = new Schema({
   created_at: Number,
   lists_favorited: [{
     list_id: String,
-    is_private: String,
+    is_private: Boolean,
     list_member_count: String,
     list_subscriber_count: String,
     list_description: String,

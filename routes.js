@@ -60,10 +60,10 @@ module.exports = function(app, passport) {
   app.get('/user/:id/lists/favorites', UserController.getUserFavoriteLists);
 
   //Add list
-  app.put('/user/:id/lists/:list_id/favorite', UserController.addListItem);
+  app.put('/user/:id/lists/:list_id/favorite', UserController.addListToFavorites);
 
   //Remove list
-  app.delete('/user/:id/lists/:list_id/unfavorite', UserController.removeListItem);
+  app.delete('/user/:id/lists/:list_id/favorite', UserController.removeListFromFavorites);
 
   //Fav/RT/Discard Tweet
   app.post('/user/:id/tweet_action/:action/:tweet_id', UserController.doTweetAction);

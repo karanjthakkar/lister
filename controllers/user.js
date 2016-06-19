@@ -112,7 +112,7 @@ exports.getUserData = function(req, res) {
           profile_image_url: user.profile_image_url,
           profile_banner_url: user.profile_banner_url,
           created_at: user.created_at,
-          lists_added: user.lists_added
+          lists_favorited: user.lists_favorited
         };
         return res.status(200).json(userObject);
       }
@@ -159,10 +159,25 @@ exports.getUserAllLists = function(req, res) {
           });
         }
 
+        if (user.lists_favorited) {
+          user_lists = user_lists.map((item) => {
+            var isFavorited = _.find(user.lists_favorited, (favoritedLists) => {
+              if (item.id_str === favoritedLists.list_id) {
+                return true;
+              }
+              return false;
+            });
+            return Object.assign({}, item, {
+              is_favorited: isFavorited ? true : false
+            });
+          });
+        }
+
         returnObj = _.map(user_lists, function(item) {
           return {
             list_id: item.id_str,
             is_private: item.mode !== 'public',
+            is_favorited: item.is_favorited || false,
             list_member_count: item.member_count,
             list_subscriber_count: item.subscriber_count,
             list_description: item.description,
@@ -205,7 +220,7 @@ exports.getUserFavoriteLists = function(req, res) {
         });
       }
 
-      var returnObj = _.map(user.lists_added, function(item) {
+      var returnObj = _.map(user.lists_favorited, function(item) {
         return {
           list_id: item.id_str,
           is_private: item.mode !== 'public',
@@ -216,7 +231,8 @@ exports.getUserFavoriteLists = function(req, res) {
           list_created_at: item.created_at,
           is_owner: item.user.id === userId,
           list_owner_author: item.user.screen_name,
-          list_owner_profile_image_url: item.user.profile_image_url_https
+          list_owner_profile_image_url: item.user.profile_image_url_https,
+          is_favorited: true
         };
       });
 
@@ -230,7 +246,7 @@ exports.getUserFavoriteLists = function(req, res) {
   }
 };
 
-exports.addListItem = function(req, res) {
+exports.addListToFavorites = function(req, res) {
   var userId = parseInt(req.params.id);
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({
@@ -262,7 +278,7 @@ exports.addListItem = function(req, res) {
             message: 'Error fetching list details'
           });
         }
-        var isAlreadyAdded = _.some(user.lists_added, function(item) {
+        var isAlreadyAdded = _.some(user.lists_favorited, function(item) {
           return item.list_id === req.params.list_id
         });
         if (isAlreadyAdded) {
@@ -279,7 +295,7 @@ exports.addListItem = function(req, res) {
           list_name: list.name,
           list_created_at: list.created_at
         };
-        user.lists_added.push(listObject);
+        user.lists_favorited.push(listObject);
         user.save(function(err, data) {
           if (err) {
             return res.status(500).json({
@@ -298,7 +314,7 @@ exports.addListItem = function(req, res) {
   }
 };
 
-exports.removeListItem = function(req, res) {
+exports.removeListFromFavorites = function(req, res) {
   var userId = parseInt(req.params.id);
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({
@@ -323,7 +339,7 @@ exports.removeListItem = function(req, res) {
         access_token: user.twitter_token,
         access_token_secret: user.twitter_token_secret
       });
-      user.lists_added = _.filter(user.lists_added, function(item) {
+      user.lists_favorited = _.filter(user.lists_favorited, function(item) {
         return item.list_id !== req.params.list_id
       });
       user.save(function(err, data) {

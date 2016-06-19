@@ -220,7 +220,7 @@ exports.getUserFavoriteLists = function(req, res) {
         });
       }
 
-      var returnObj = _.map(user.lists_favorited, function(item) {
+      var returnObj = user.lists_favorited.map(function(item) {
         return Object.assign(item, {
           is_favorited: true
         });
@@ -238,7 +238,7 @@ exports.getUserFavoriteLists = function(req, res) {
 
 exports.addListToFavorites = function(req, res) {
   var userId = parseInt(req.params.id);
-  var listId = parseInt(req.params.list_id);
+  var listId = req.params.list_id
   console.log(Date.now() + ' addListToFavorites called by ' + userId + ' for ' + (req.user && JSON.stringify(req.user)) + ' for listId ' + listId);
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({
@@ -308,7 +308,7 @@ exports.addListToFavorites = function(req, res) {
 
 exports.removeListFromFavorites = function(req, res) {
   var userId = parseInt(req.params.id);
-  var listId = parseInt(req.params.list_id);
+  var listId = req.params.list_id
   console.log(Date.now() + ' removeListFromFavorites called by ' + userId + ' for ' + (req.user && JSON.stringify(req.user)) + ' for listId ' + listId);
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({

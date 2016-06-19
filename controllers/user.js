@@ -221,19 +221,9 @@ exports.getUserFavoriteLists = function(req, res) {
       }
 
       var returnObj = _.map(user.lists_favorited, function(item) {
-        return {
-          list_id: item.id_str,
-          is_private: item.mode !== 'public',
-          list_member_count: item.member_count,
-          list_subscriber_count: item.subscriber_count,
-          list_description: item.description,
-          list_name: item.name,
-          list_created_at: item.created_at,
-          is_owner: item.user.id === userId,
-          list_owner_author: item.user.screen_name,
-          list_owner_profile_image_url: item.user.profile_image_url_https,
+        return Object.assign(item, {
           is_favorited: true
-        };
+        });
       });
 
       return res.status(200).json({

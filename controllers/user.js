@@ -220,8 +220,8 @@ exports.getUserFavoriteLists = function(req, res) {
         });
       }
 
-      var returnObj = user.lists_favorited.map(function(item) {
-        return Object.assign(item, {
+      var returnObj = user.lists_favorited.map((item) => {
+        return Object.assign({}, item.toObject(), {
           is_favorited: true
         });
       });

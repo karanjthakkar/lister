@@ -248,6 +248,8 @@ exports.getUserFavoriteLists = function(req, res) {
 
 exports.addListToFavorites = function(req, res) {
   var userId = parseInt(req.params.id);
+  var listId = parseInt(req.params.list_id);
+  console.log(Date.now() + ' addListToFavorites called by ' + userId + ' for ' + (req.user && JSON.stringify(req.user)) + ' for listId ' + listId);
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({
       code: 1,
@@ -271,7 +273,7 @@ exports.addListToFavorites = function(req, res) {
         access_token: user.twitter_token,
         access_token_secret: user.twitter_token_secret
       });
-      utils.getSingleList(T, req.params.list_id, function(err, list) {
+      utils.getSingleList(T, listId, function(err, list) {
         if (err) {
           return res.status(500).json({
             success: false,
@@ -279,7 +281,7 @@ exports.addListToFavorites = function(req, res) {
           });
         }
         var isAlreadyAdded = _.some(user.lists_favorited, function(item) {
-          return item.list_id === req.params.list_id
+          return item.list_id === listId
         });
         if (isAlreadyAdded) {
           return res.status(200).json({
@@ -316,6 +318,8 @@ exports.addListToFavorites = function(req, res) {
 
 exports.removeListFromFavorites = function(req, res) {
   var userId = parseInt(req.params.id);
+  var listId = parseInt(req.params.list_id);
+  console.log(Date.now() + ' removeListFromFavorites called by ' + userId + ' for ' + (req.user && JSON.stringify(req.user)) + ' for listId ' + listId);
   if(req.user && req.user.id !== userId) {
     return res.status(403).json({
       code: 1,
@@ -340,7 +344,7 @@ exports.removeListFromFavorites = function(req, res) {
         access_token_secret: user.twitter_token_secret
       });
       user.lists_favorited = _.filter(user.lists_favorited, function(item) {
-        return item.list_id !== req.params.list_id
+        return item.list_id !== listId
       });
       user.save(function(err, data) {
         if (err) {

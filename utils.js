@@ -101,7 +101,7 @@ module.exports = {
 
       if (is_quote_status) {
         quotedTweetObject = tweet.quoted_status
-                            || tweet.retweeted_status.quoted_status
+                            || (tweet.retweeted_status && tweet.retweeted_status.quoted_status)
                             || (is_quote_status = false) /* Add fallback for deleted quoted status */;
       }
 
